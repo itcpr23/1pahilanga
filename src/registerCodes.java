@@ -23,8 +23,8 @@ public class registerCodes {
         
         try{
             Class.forName("com.mysql.jdbc.Driver");
-            Connection con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/pahilangareg?","root","");
-            String sql = "insert into register values(?,?,?,md5(?));";
+            Connection con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/ted?","root","");
+            String sql = "insert into register values(?,?,?,?);";
             PreparedStatement pstmt = con.prepareStatement(sql);
             
             pstmt.setString(1, fname);
@@ -60,7 +60,7 @@ public class registerCodes {
         int x=0;
         try{
             Class.forName("com.mysql.jdbc.Driver");
-            Connection con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/pahilangareg?","root","");
+            Connection con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/ted?","root","");
             String sql = "select * from register where username=?;";
             
             PreparedStatement pstmt = con.prepareStatement(sql);

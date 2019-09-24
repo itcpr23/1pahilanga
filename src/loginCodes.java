@@ -23,8 +23,8 @@ public class loginCodes {
         
         try{
             Class.forName("com.mysql.jdbc.Driver");
-            Connection con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/pahilangareg?", "root","");
-            String sql = "select * from register where username=? and password=md5(?);";
+            Connection con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/ted?", "root","");
+            String sql = "select * from register where username=? and password=?;";
             PreparedStatement pstmt = con.prepareStatement(sql);
             pstmt.setString(1, uname);
             pstmt.setString(2, pass);
