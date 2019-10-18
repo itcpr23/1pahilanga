@@ -110,7 +110,7 @@ public class main extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
+        search = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
 
         addp.setMinimumSize(new java.awt.Dimension(400, 232));
@@ -444,7 +444,12 @@ public class main extends javax.swing.JFrame {
             }
         });
 
-        jTextField1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        search.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        search.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                searchKeyReleased(evt);
+            }
+        });
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(255, 255, 255));
@@ -475,9 +480,9 @@ public class main extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel10)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton6)
+                .addComponent(search, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -487,7 +492,7 @@ public class main extends javax.swing.JFrame {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(13, 13, 13)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(search, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton6)
                     .addComponent(jLabel10))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -662,6 +667,39 @@ if(x==0){
 // TODO add your handling code here:
     }//GEN-LAST:event_jButton7ActionPerformed
 
+    private void searchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchKeyReleased
+String a = search.getText();
+
+try{
+    Class.forName("com.mysql.jdbc.Driver");
+    Connection con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/ted?","root","");
+    String sql = "select * from product where prodname like ?;";
+    PreparedStatement pstmt = con.prepareStatement(sql);
+    pstmt.setString(1, "%"+a+"%");
+    
+    ResultSet rs = pstmt.executeQuery();
+    DefaultTableModel model = (DefaultTableModel) productTable.getModel();
+    model.setRowCount(0);
+    
+    if(!rs.isBeforeFirst()){
+        model.addRow(new Object [] {"NO RESULT"});
+    }else{
+        while(rs.next()){
+        model.addRow(new Object[]{rs.getInt("prod_id"),rs.getString("prodname"),rs.getInt("quantity"),rs.getInt("price")});
+    }
+    }
+}       catch (ClassNotFoundException ex) {
+            Logger.getLogger(main.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(main.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+
+
+
+        // TODO add your handling code here:
+    }//GEN-LAST:event_searchKeyReleased
+
     /**
      * @param args the command line arguments
      */
@@ -728,11 +766,11 @@ if(x==0){
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel pid;
     private javax.swing.JTextField pname;
     private javax.swing.JFormattedTextField pprice;
     private javax.swing.JSpinner pquantity;
     private javax.swing.JTable productTable;
+    private javax.swing.JTextField search;
     // End of variables declaration//GEN-END:variables
 }
